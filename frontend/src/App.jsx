@@ -5,14 +5,17 @@ import SimulatorBar from './components/SimulatorBar';
 import ThreatFeed from './components/ThreatFeed';
 import LogStream from './components/LogStream';
 import CustomLogModal from './components/CustomLogModal';
-import { fetchDashboardStats, fetchThreats } from './api';
+import BackendConnectModal from './components/BackendConnectModal';
+import { fetchDashboardStats, fetchThreats, getEngineMode } from './api';
 
 export default function App() {
   const [stats, setStats] = useState(null);
   const [threats, setThreats] = useState([]);
   const [backendConnected, setBackendConnected] = useState(false);
+  const [engineMode, setEngineMode] = useState('demo');
   const [refreshing, setRefreshing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isConnectModalOpen, setIsConnectModalOpen] = useState(false);
   const [streamRefreshKey, setStreamRefreshKey] = useState(0);
 
   const loadAllData = useCallback(async () => {
@@ -25,9 +28,11 @@ export default function App() {
       setStats(statsData);
       setThreats(threatsData);
       setBackendConnected(true);
+      setEngineMode(getEngineMode());
     } catch (err) {
       console.warn('Backend not responding yet:', err.message);
       setBackendConnected(false);
+      setEngineMode('offline');
     } finally {
       setRefreshing(false);
     }
@@ -53,7 +58,9 @@ export default function App() {
     }}>
       <Header
         backendConnected={backendConnected}
+        engineMode={engineMode}
         onRefresh={handleDataChanged}
+        onOpenConnectModal={() => setIsConnectModalOpen(true)}
         refreshing={refreshing}
       />
 
@@ -83,6 +90,13 @@ export default function App() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onLogIngested={handleDataChanged}
+      />
+
+      {/* PC Backend Tunnel Connect Modal */}
+      <BackendConnectModal
+        isOpen={isConnectModalOpen}
+        onClose={() => setIsConnectModalOpen(false)}
+        onConnected={handleDataChanged}
       />
     </div>
   );

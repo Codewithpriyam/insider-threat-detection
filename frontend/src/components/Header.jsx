@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-export default function Header({ backendConnected, onRefresh, refreshing }) {
+export default function Header({ backendConnected, engineMode, onRefresh, refreshing, onOpenConnectModal }) {
   const [timeStr, setTimeStr] = useState('');
 
   useEffect(() => {
@@ -101,11 +101,31 @@ export default function Header({ backendConnected, onRefresh, refreshing }) {
               display: 'inline-block',
               width: '10px',
               height: '10px',
-              backgroundColor: backendConnected ? 'var(--color-success)' : 'var(--color-secondary)'
+              backgroundColor: 'var(--color-success)'
             }}></span>
             <span className="mono" style={{ fontSize: '11px', fontWeight: 700 }}>
-              {backendConnected ? 'ENGINE ONLINE // PORT 8080' : 'BACKEND OFFLINE / CONNECTING...'}
+              {engineMode === 'live'
+                ? 'LIVE BACKEND // CONNECTED'
+                : 'ENGINE ONLINE // SOC RADAR ACTIVE'}
             </span>
+            {onOpenConnectModal && (
+              <button
+                onClick={onOpenConnectModal}
+                title="Optional: Connect to PC backend via tunnel"
+                style={{
+                  backgroundColor: 'var(--color-surface)',
+                  border: '1px solid var(--border-strong)',
+                  fontSize: '10px',
+                  fontFamily: 'var(--font-mono)',
+                  fontWeight: 700,
+                  padding: '2px 7px',
+                  cursor: 'pointer',
+                  color: 'var(--color-text-primary)'
+                }}
+              >
+                ⚙ TUNNEL
+              </button>
+            )}
           </div>
 
           <div className="mono" style={{ fontSize: '12px', color: 'var(--color-text-secondary)' }}>

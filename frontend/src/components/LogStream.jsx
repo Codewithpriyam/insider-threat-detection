@@ -55,6 +55,24 @@ export default function LogStream({ onOpenCustomLogModal, onDataChanged }) {
     }
   };
 
+  const handleLoadSampleCsv = async () => {
+    try {
+      setUploading(true);
+      const response = await fetch('./sample_threat_logs.csv');
+      if (!response.ok) throw new Error('Could not load sample_threat_logs.csv from public directory');
+      const blob = await response.blob();
+      const file = new File([blob], 'sample_threat_logs.csv', { type: 'text/csv' });
+      const res = await uploadCsvLogs(file);
+      alert(`SCAN COMPLETE: Ingested ${res.totalIngested} benchmark logs from sample_threat_logs.csv. Threat radar updated!`);
+      if (onDataChanged) onDataChanged();
+      loadLogs();
+    } catch (err) {
+      alert(`Error loading sample CSV: ${err.message}`);
+    } finally {
+      setUploading(false);
+    }
+  };
+
   const formatBytes = (bytes) => {
     if (!bytes || bytes === 0) return '—';
     if (bytes >= 1048576) return `${(bytes / 1048576).toFixed(1)} MB`;
@@ -90,7 +108,7 @@ export default function LogStream({ onOpenCustomLogModal, onDataChanged }) {
           </h2>
         </div>
 
-        <div style={{ display: 'flex', gap: '10px' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
           <input
             type="file"
             accept=".csv,.txt"
@@ -101,17 +119,35 @@ export default function LogStream({ onOpenCustomLogModal, onDataChanged }) {
 
           <button
             className="btn btn-secondary btn-small"
+            onClick={handleLoadSampleCsv}
+            disabled={uploading}
+            style={{ backgroundColor: 'var(--color-surface)', borderColor: 'var(--color-primary)' }}
+          >
+            {uploading ? 'LOADING BENCHMARK...' : '⚡ AUTO-INGEST SAMPLE CSV'}
+          </button>
+
+          <button
+            className="btn btn-secondary btn-small"
             onClick={() => fileInputRef.current?.click()}
             disabled={uploading}
           >
-            {uploading ? 'SCANNING LOGS...' : '⬆ UPLOAD CSV LOGS'}
+            {uploading ? 'SCANNING LOGS...' : '⬆ UPLOAD CSV'}
           </button>
+
+          <a
+            href="./sample_threat_logs.csv"
+            download="sample_threat_logs.csv"
+            className="btn btn-secondary btn-small"
+            style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}
+          >
+            ⬇ GET CSV
+          </a>
 
           <button
             className="btn btn-primary btn-small"
             onClick={onOpenCustomLogModal}
           >
-            + INGEST CUSTOM EVENT
+            + INGEST EVENT
           </button>
         </div>
       </div>
