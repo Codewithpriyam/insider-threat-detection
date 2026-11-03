@@ -17,7 +17,7 @@ def build_presentation():
     MARGIN_LEFT = Inches(0.80)
     CONTENT_WIDTH = Inches(11.733)  # 13.333 - 1.60 = 11.733
     
-    # Colors
+    # Colors (VoiceBox Brutalist Editorial System)
     C_BG = RGBColor(250, 250, 250)        # #FAFAFA
     C_CARD = RGBColor(245, 245, 245)      # #F5F5F5
     C_CODE_BG = RGBColor(230, 230, 230)   # #E6E6E6
@@ -70,186 +70,292 @@ def build_presentation():
         line.fill.fore_color.rgb = C_PRIMARY
         line.line.fill.background()
 
+    # Shared grid parameters
+    col_gap = Inches(0.35)
+    col_w2 = (CONTENT_WIDTH - col_gap) / 2
+    top_c = Inches(1.80)
+    card_h = Inches(5.00)
+
     # ==========================================================
-    # SLIDE 1: TITLE SLIDE
+    # SLIDE 1: COVER / TITLE SLIDE
     # ==========================================================
     s1 = prs.slides.add_slide(blank_layout)
     set_slide_background(s1)
     
     # Top Accent Bar
-    top_bar = s1.shapes.add_shape(MSO_SHAPE.RECTANGLE, MARGIN_LEFT, Inches(0.65), CONTENT_WIDTH, Inches(0.12))
+    top_bar = s1.shapes.add_shape(MSO_SHAPE.RECTANGLE, MARGIN_LEFT, Inches(0.70), CONTENT_WIDTH, Inches(0.12))
     top_bar.fill.solid()
     top_bar.fill.fore_color.rgb = C_PRIMARY
     top_bar.line.fill.background()
     
     # Kicker
-    kicker = s1.shapes.add_textbox(MARGIN_LEFT, Inches(1.10), CONTENT_WIDTH, Inches(0.35))
+    kicker = s1.shapes.add_textbox(MARGIN_LEFT, Inches(1.15), CONTENT_WIDTH, Inches(0.35))
     tf_k = kicker.text_frame
     tf_k.word_wrap = True
     tf_k.margin_left = tf_k.margin_top = tf_k.margin_right = tf_k.margin_bottom = 0
     p = tf_k.paragraphs[0]
-    p.text = "CYBERSECURITY MINI PROJECT // USER BEHAVIOR ANALYTICS"
+    p.text = "CYBERSECURITY MINI PROJECT // USER & ENTITY BEHAVIOR ANALYTICS"
     p.font.name = FONT_BODY
     p.font.size = Pt(12)
     p.font.bold = True
     p.font.color.rgb = C_RED
     
     # Title
-    t_box = s1.shapes.add_textbox(MARGIN_LEFT, Inches(1.55), CONTENT_WIDTH, Inches(1.40))
+    t_box = s1.shapes.add_textbox(MARGIN_LEFT, Inches(1.60), CONTENT_WIDTH, Inches(1.50))
     tf_t = t_box.text_frame
     tf_t.word_wrap = True
     tf_t.margin_left = tf_t.margin_top = tf_t.margin_right = tf_t.margin_bottom = 0
     p = tf_t.paragraphs[0]
-    p.text = "INSIDER THREAT DETECTION SYSTEM"
+    p.text = "INSIDER THREAT\nDETECTION SYSTEM"
     p.font.name = FONT_DISPLAY
-    p.font.size = Pt(40)
+    p.font.size = Pt(44)
     p.font.color.rgb = C_PRIMARY
     
     # Subtitle
-    sub_box = s1.shapes.add_textbox(MARGIN_LEFT, Inches(3.05), CONTENT_WIDTH, Inches(0.50))
+    sub_box = s1.shapes.add_textbox(MARGIN_LEFT, Inches(3.35), CONTENT_WIDTH, Inches(0.50))
     tf_sub = sub_box.text_frame
     tf_sub.word_wrap = True
     tf_sub.margin_left = tf_sub.margin_top = tf_sub.margin_right = tf_sub.margin_bottom = 0
     p = tf_sub.paragraphs[0]
-    p.text = "Real-Time User Activity Log Auditing & Heuristic Behavioral Analysis"
+    p.text = "Real-Time User Activity Log Auditing & Heuristic Behavioral Analysis (UBA)"
     p.font.name = FONT_BODY
-    p.font.size = Pt(19)
+    p.font.size = Pt(20)
     p.font.color.rgb = C_MUTED
     
-    # Overview Card
-    card1 = s1.shapes.add_shape(MSO_SHAPE.RECTANGLE, MARGIN_LEFT, Inches(3.85), CONTENT_WIDTH, Inches(2.85))
-    card1.fill.solid()
-    card1.fill.fore_color.rgb = C_CARD
-    card1.line.color.rgb = C_PRIMARY
-    card1.line.width = Pt(2)
+    # 3 Clean Meta Overview Cards across bottom
+    c3_gap = Inches(0.30)
+    c3_w = (CONTENT_WIDTH - 2 * c3_gap) / 3
+    c3_top = Inches(4.25)
+    c3_h = Inches(2.45)
     
-    # Red accent stripe on left of card
-    stripe = s1.shapes.add_shape(MSO_SHAPE.RECTANGLE, MARGIN_LEFT, Inches(3.85), Inches(0.12), Inches(2.85))
-    stripe.fill.solid()
-    stripe.fill.fore_color.rgb = C_RED
-    stripe.line.fill.background()
-    
-    # Card Content Text
-    c1_txt = s1.shapes.add_textbox(MARGIN_LEFT + Inches(0.40), Inches(4.05), CONTENT_WIDTH - Inches(0.60), Inches(2.45))
-    tf_c1 = c1_txt.text_frame
-    tf_c1.word_wrap = True
-    tf_c1.margin_left = tf_c1.margin_top = tf_c1.margin_right = tf_c1.margin_bottom = 0
-    
-    p = tf_c1.paragraphs[0]
-    p.text = "PROJECT OVERVIEW & TECHNICAL ARCHITECTURE"
-    p.font.name = FONT_DISPLAY
-    p.font.size = Pt(12)
-    p.font.color.rgb = C_PRIMARY
-    p.space_after = Pt(12)
-    
-    bullets_s1 = [
-        "▪ Architecture: React 19 (Frontend) + Java Spring Boot 3.3.4 (REST API) + MySQL / H2 Relational Storage",
-        "▪ UI Design: VoiceBox High-Contrast Editorial System (0px border-radius, pure monochrome + red accent)",
-        "▪ Heuristic Engine: Real-time sliding-window analytics detecting off-hours access, exfiltration spikes & privilege escalation",
-        "▪ Methodology: Spec-Driven Development (SpecKit Standard) for high-reliability academic defense"
+    meta_cards = [
+        {
+            "tag": "CORE ARCHITECTURE",
+            "title": "FULL-STACK PLATFORM",
+            "desc": "Built with Java Spring Boot 3.3.4 (REST API), React 19 + Vite (VoiceBox UI), and MySQL/H2 relational storage."
+        },
+        {
+            "tag": "HEURISTIC DETECTION",
+            "title": "SLIDING-WINDOW UBA",
+            "desc": "Deterministic 10-minute rolling heuristics targeting brute-force logins, mass exfiltration & privilege escalation."
+        },
+        {
+            "tag": "EVALUATION DEFENSE",
+            "title": "BENCHMARK VALIDATED",
+            "desc": "100% detection rate on 140 benchmark logs with zero false positives on routine corporate daytime traffic."
+        }
     ]
-    for b in bullets_s1:
-        p = tf_c1.add_paragraph()
-        p.text = b
-        p.font.name = FONT_MONO
-        p.font.size = Pt(12.5)
+    
+    for i, mc in enumerate(meta_cards):
+        x = MARGIN_LEFT + i * (c3_w + c3_gap)
+        c = s1.shapes.add_shape(MSO_SHAPE.RECTANGLE, x, c3_top, c3_w, c3_h)
+        c.fill.solid()
+        c.fill.fore_color.rgb = C_CARD
+        c.line.color.rgb = C_PRIMARY
+        c.line.width = Pt(2)
+        
+        # Red top accent strip
+        stripe = s1.shapes.add_shape(MSO_SHAPE.RECTANGLE, x, c3_top, c3_w, Inches(0.08))
+        stripe.fill.solid()
+        stripe.fill.fore_color.rgb = C_RED
+        stripe.line.fill.background()
+        
+        tx = s1.shapes.add_textbox(x + Inches(0.25), c3_top + Inches(0.25), c3_w - Inches(0.50), c3_h - Inches(0.40))
+        tf = tx.text_frame
+        tf.word_wrap = True
+        tf.margin_left = tf.margin_top = tf.margin_right = tf.margin_bottom = 0
+        
+        p = tf.paragraphs[0]
+        p.text = mc["tag"]
+        p.font.name = FONT_BODY
+        p.font.size = Pt(10.5)
+        p.font.bold = True
+        p.font.color.rgb = C_RED
+        p.space_after = Pt(4)
+        
+        p = tf.add_paragraph()
+        p.text = mc["title"]
+        p.font.name = FONT_DISPLAY
+        p.font.size = Pt(13.5)
         p.font.color.rgb = C_PRIMARY
-        p.space_after = Pt(6)
+        p.space_after = Pt(10)
+        
+        p = tf.add_paragraph()
+        p.text = mc["desc"]
+        p.font.name = FONT_BODY
+        p.font.size = Pt(12)
+        p.font.color.rgb = C_MUTED
 
     # ==========================================================
-    # SLIDE 2: BACKGROUND & MOTIVATION
+    # SLIDE 2: 01 // INTRODUCTION & SYSTEM OVERVIEW
     # ==========================================================
     s2 = prs.slides.add_slide(blank_layout)
     set_slide_background(s2)
-    add_header(s2, "01 // BACKGROUND & MOTIVATION", "THE INSIDER THREAT CHALLENGE")
+    add_header(s2, "01 // PROJECT INTRODUCTION", "SYSTEM OVERVIEW & CORE CONCEPTS")
     
-    col_gap = Inches(0.35)
-    col_w = (CONTENT_WIDTH - col_gap) / 2
-    top_c = Inches(1.80)
-    card_h = Inches(5.00)
+    # Left Card: What is UBA?
+    c_intro_l = s2.shapes.add_shape(MSO_SHAPE.RECTANGLE, MARGIN_LEFT, top_c, col_w2, card_h)
+    c_intro_l.fill.solid()
+    c_intro_l.fill.fore_color.rgb = C_CARD
+    c_intro_l.line.color.rgb = C_PRIMARY
+    c_intro_l.line.width = Pt(2)
     
-    # Left Card
-    c_left = s2.shapes.add_shape(MSO_SHAPE.RECTANGLE, MARGIN_LEFT, top_c, col_w, card_h)
-    c_left.fill.solid()
-    c_left.fill.fore_color.rgb = C_CARD
-    c_left.line.color.rgb = C_PRIMARY
-    c_left.line.width = Pt(2)
+    bar_il = s2.shapes.add_shape(MSO_SHAPE.RECTANGLE, MARGIN_LEFT, top_c, col_w2, Inches(0.08))
+    bar_il.fill.solid()
+    bar_il.fill.fore_color.rgb = C_RED
+    bar_il.line.fill.background()
     
-    # Left Top Bar (Red Accent)
-    bar_l = s2.shapes.add_shape(MSO_SHAPE.RECTANGLE, MARGIN_LEFT, top_c, col_w, Inches(0.08))
-    bar_l.fill.solid()
-    bar_l.fill.fore_color.rgb = C_RED
-    bar_l.line.fill.background()
-    
-    txt_l = s2.shapes.add_textbox(MARGIN_LEFT + Inches(0.35), top_c + Inches(0.35), col_w - Inches(0.70), card_h - Inches(0.60))
-    tf_l = txt_l.text_frame
-    tf_l.word_wrap = True
-    tf_l.margin_left = tf_l.margin_top = tf_l.margin_right = tf_l.margin_bottom = 0
-    p = tf_l.paragraphs[0]
-    p.text = "WHY PERIMETER DEFENSES FAIL"
+    tx_il = s2.shapes.add_textbox(MARGIN_LEFT + Inches(0.35), top_c + Inches(0.35), col_w2 - Inches(0.70), card_h - Inches(0.60))
+    tf_il = tx_il.text_frame
+    tf_il.word_wrap = True
+    tf_il.margin_left = tf_il.margin_top = tf_il.margin_right = tf_il.margin_bottom = 0
+    p = tf_il.paragraphs[0]
+    p.text = "WHAT IS USER BEHAVIOR ANALYTICS (UBA)?"
     p.font.name = FONT_DISPLAY
-    p.font.size = Pt(16)
+    p.font.size = Pt(15.5)
     p.font.color.rgb = C_RED
     p.space_after = Pt(16)
     
-    b_left = [
-        "▪ Traditional firewalls and IDS defend against external adversaries attacking from outside the corporate network.",
-        "▪ Insider threats originate from authenticated employees, contractors, or compromised legitimate accounts.",
-        "▪ Their actions look \"legitimate\" at the network layer because valid corporate user credentials and tokens are used.",
-        "▪ Industry reports indicate average insider breach containment exceeds 85 days when relying solely on perimeter controls."
+    b_intro_l = [
+        "▪ Behavioral Identity Shift: Shifts security monitoring from perimeter firewalls to internal identity and activity patterns.",
+        "▪ Contextual Audit Ingestion: Ingests normalized event streams across authentication, document access, download volumes, and roles.",
+        "▪ Rolling Sliding-Window Engine: Analyzes user behaviors across 10-minute intervals to catch fast-moving anomalies before data leaves.",
+        "▪ Zero-Lag SOC Triage: Dispatches instant alerts to a real-time Security Operations Center feed with one-click containment."
     ]
-    for b in b_left:
-        p = tf_l.add_paragraph()
+    for b in b_intro_l:
+        p = tf_il.add_paragraph()
         p.text = b
         p.font.name = FONT_BODY
-        p.font.size = Pt(13.5)
+        p.font.size = Pt(13)
         p.font.color.rgb = C_PRIMARY
         p.space_after = Pt(14)
         
-    # Right Card
-    c_right_x = MARGIN_LEFT + col_w + col_gap
-    c_right = s2.shapes.add_shape(MSO_SHAPE.RECTANGLE, c_right_x, top_c, col_w, card_h)
-    c_right.fill.solid()
-    c_right.fill.fore_color.rgb = C_CARD
-    c_right.line.color.rgb = C_PRIMARY
-    c_right.line.width = Pt(2)
+    # Right Card: Technical Foundations
+    c_intro_r_x = MARGIN_LEFT + col_w2 + col_gap
+    c_intro_r = s2.shapes.add_shape(MSO_SHAPE.RECTANGLE, c_intro_r_x, top_c, col_w2, card_h)
+    c_intro_r.fill.solid()
+    c_intro_r.fill.fore_color.rgb = C_CARD
+    c_intro_r.line.color.rgb = C_PRIMARY
+    c_intro_r.line.width = Pt(2)
     
-    bar_r = s2.shapes.add_shape(MSO_SHAPE.RECTANGLE, c_right_x, top_c, col_w, Inches(0.08))
-    bar_r.fill.solid()
-    bar_r.fill.fore_color.rgb = C_PRIMARY
-    bar_r.line.fill.background()
+    bar_ir = s2.shapes.add_shape(MSO_SHAPE.RECTANGLE, c_intro_r_x, top_c, col_w2, Inches(0.08))
+    bar_ir.fill.solid()
+    bar_ir.fill.fore_color.rgb = C_PRIMARY
+    bar_ir.line.fill.background()
     
-    txt_r = s2.shapes.add_textbox(c_right_x + Inches(0.35), top_c + Inches(0.35), col_w - Inches(0.70), card_h - Inches(0.60))
-    tf_r = txt_r.text_frame
-    tf_r.word_wrap = True
-    tf_r.margin_left = tf_r.margin_top = tf_r.margin_right = tf_r.margin_bottom = 0
-    p = tf_r.paragraphs[0]
-    p.text = "THE PROPOSED SOLUTION: UBA"
+    tx_ir = s2.shapes.add_textbox(c_intro_r_x + Inches(0.35), top_c + Inches(0.35), col_w2 - Inches(0.70), card_h - Inches(0.60))
+    tf_ir = tx_ir.text_frame
+    tf_ir.word_wrap = True
+    tf_ir.margin_left = tf_ir.margin_top = tf_ir.margin_right = tf_ir.margin_bottom = 0
+    p = tf_ir.paragraphs[0]
+    p.text = "TECHNICAL FOUNDATIONS & METHODOLOGY"
     p.font.name = FONT_DISPLAY
-    p.font.size = Pt(16)
+    p.font.size = Pt(15.5)
     p.font.color.rgb = C_PRIMARY
     p.space_after = Pt(16)
     
-    b_right = [
-        "▪ User Behavior Analytics (UBA) continuously monitors internal audit logs rather than just firewall boundaries.",
-        "▪ Evaluates contextual indicators: off-hours activity, excessive file transfer volumes, and privilege alteration attempts.",
-        "▪ Utilizes deterministic sliding-window heuristics to calculate instant risk scoring and threat alerts.",
-        "▪ Detects data exfiltration and credential misuse in real time before sensitive intellectual property leaves the network."
+    b_intro_r = [
+        "▪ Java Spring Boot 3 Service: Implements deterministic, sliding-window heuristics with JPA repositories and in-memory H2 / MySQL.",
+        "▪ React 19 Frontend UI: Built under the VoiceBox Editorial Brutalist Design System (0px border-radius, pure monochrome + red accent).",
+        "▪ In-Browser Dual-Mode Engine: Seamlessly executes identical heuristics directly in JavaScript when running standalone on GitHub Pages.",
+        "▪ Spec-Driven Development: Built to rigorous SpecKit engineering standards for complete audit transparency and reproducibility."
     ]
-    for b in b_right:
-        p = tf_r.add_paragraph()
+    for b in b_intro_r:
+        p = tf_ir.add_paragraph()
         p.text = b
         p.font.name = FONT_BODY
-        p.font.size = Pt(13.5)
+        p.font.size = Pt(13)
         p.font.color.rgb = C_PRIMARY
         p.space_after = Pt(14)
 
     # ==========================================================
-    # SLIDE 3: THREAT VECTOR SCOPE
+    # SLIDE 3: 02 // PROBLEM STATEMENT
     # ==========================================================
     s3 = prs.slides.add_slide(blank_layout)
     set_slide_background(s3)
-    add_header(s3, "02 // THREAT VECTOR SCOPE", "THREE CORE ATTACK VECTORS DETECTED")
+    add_header(s3, "02 // PROBLEM STATEMENT", "THE INSIDER THREAT CRISIS")
+    
+    # Left Card: Perimeter Defenses Fail
+    c_prob_l = s3.shapes.add_shape(MSO_SHAPE.RECTANGLE, MARGIN_LEFT, top_c, col_w2, card_h)
+    c_prob_l.fill.solid()
+    c_prob_l.fill.fore_color.rgb = C_CARD
+    c_prob_l.line.color.rgb = C_PRIMARY
+    c_prob_l.line.width = Pt(2)
+    
+    bar_pl = s3.shapes.add_shape(MSO_SHAPE.RECTANGLE, MARGIN_LEFT, top_c, col_w2, Inches(0.08))
+    bar_pl.fill.solid()
+    bar_pl.fill.fore_color.rgb = C_RED
+    bar_pl.line.fill.background()
+    
+    tx_pl = s3.shapes.add_textbox(MARGIN_LEFT + Inches(0.35), top_c + Inches(0.35), col_w2 - Inches(0.70), card_h - Inches(0.60))
+    tf_pl = tx_pl.text_frame
+    tf_pl.word_wrap = True
+    tf_pl.margin_left = tf_pl.margin_top = tf_pl.margin_right = tf_pl.margin_bottom = 0
+    p = tf_pl.paragraphs[0]
+    p.text = "THE PERIMETER DEFENSE PARADOX"
+    p.font.name = FONT_DISPLAY
+    p.font.size = Pt(15.5)
+    p.font.color.rgb = C_RED
+    p.space_after = Pt(16)
+    
+    b_prob_l = [
+        "▪ The Inside Advantage: Attackers operate with valid credentials, approved workstations, and legitimate corporate network access.",
+        "▪ Perimeter Blindness: Firewalls, VPNs, and Network IDS cannot distinguish between routine business queries and mass data exfiltration.",
+        "▪ Severe Containment Lag: According to the Ponemon Institute, average insider incident detection and containment takes over 85 days.",
+        "▪ High Financial & Regulatory Damage: Average annual insider breach cost exceeds $16.2M, accompanied by severe GDPR and HIPAA liabilities."
+    ]
+    for b in b_prob_l:
+        p = tf_pl.add_paragraph()
+        p.text = b
+        p.font.name = FONT_BODY
+        p.font.size = Pt(13)
+        p.font.color.rgb = C_PRIMARY
+        p.space_after = Pt(14)
+        
+    # Right Card: Research & Engineering Objectives
+    c_prob_r_x = MARGIN_LEFT + col_w2 + col_gap
+    c_prob_r = s3.shapes.add_shape(MSO_SHAPE.RECTANGLE, c_prob_r_x, top_c, col_w2, card_h)
+    c_prob_r.fill.solid()
+    c_prob_r.fill.fore_color.rgb = C_CARD
+    c_prob_r.line.color.rgb = C_PRIMARY
+    c_prob_r.line.width = Pt(2)
+    
+    bar_pr = s3.shapes.add_shape(MSO_SHAPE.RECTANGLE, c_prob_r_x, top_c, col_w2, Inches(0.08))
+    bar_pr.fill.solid()
+    bar_pr.fill.fore_color.rgb = C_PRIMARY
+    bar_pr.line.fill.background()
+    
+    tx_pr = s3.shapes.add_textbox(c_prob_r_x + Inches(0.35), top_c + Inches(0.35), col_w2 - Inches(0.70), card_h - Inches(0.60))
+    tf_pr = tx_pr.text_frame
+    tf_pr.word_wrap = True
+    tf_pr.margin_left = tf_pr.margin_top = tf_pr.margin_right = tf_pr.margin_bottom = 0
+    p = tf_pr.paragraphs[0]
+    p.text = "RESEARCH & ENGINEERING OBJECTIVES"
+    p.font.name = FONT_DISPLAY
+    p.font.size = Pt(15.5)
+    p.font.color.rgb = C_PRIMARY
+    p.space_after = Pt(16)
+    
+    b_prob_r = [
+        "▪ Objective 1 (High-Speed Ingestion): Ingest large batch CSV files (up to 200MB) and streaming logs with automatic delimiter detection.",
+        "▪ Objective 2 (Transparent Heuristics): Implement deterministic sliding-window rules that provide clear forensic reasoning behind every alert.",
+        "▪ Objective 3 (Immediate Containment): Equip security operators with 1-click threat resolution linked directly to raw evidence logs.",
+        "▪ Objective 4 (Zero False Positives): Maintain 0% false positive rates on routine daytime activity while ensuring 100% detection of critical threats."
+    ]
+    for b in b_prob_r:
+        p = tf_pr.add_paragraph()
+        p.text = b
+        p.font.name = FONT_BODY
+        p.font.size = Pt(13)
+        p.font.color.rgb = C_PRIMARY
+        p.space_after = Pt(14)
+
+    # ==========================================================
+    # SLIDE 4: 03 // THREAT VECTOR SCOPE
+    # ==========================================================
+    s4 = prs.slides.add_slide(blank_layout)
+    set_slide_background(s4)
+    add_header(s4, "03 // THREAT VECTOR SCOPE", "THREE CORE ATTACK VECTORS DETECTED")
     
     col3_gap = Inches(0.30)
     col3_w = (CONTENT_WIDTH - 2 * col3_gap) / 3
@@ -292,19 +398,19 @@ def build_presentation():
     
     for i, v in enumerate(vectors):
         x = MARGIN_LEFT + i * (col3_w + col3_gap)
-        c = s3.shapes.add_shape(MSO_SHAPE.RECTANGLE, x, top_c, col3_w, card_h)
+        c = s4.shapes.add_shape(MSO_SHAPE.RECTANGLE, x, top_c, col3_w, card_h)
         c.fill.solid()
         c.fill.fore_color.rgb = C_CARD
         c.line.color.rgb = C_PRIMARY
         c.line.width = Pt(2)
         
         # Red top accent
-        b_acc = s3.shapes.add_shape(MSO_SHAPE.RECTANGLE, x, top_c, col3_w, Inches(0.08))
+        b_acc = s4.shapes.add_shape(MSO_SHAPE.RECTANGLE, x, top_c, col3_w, Inches(0.08))
         b_acc.fill.solid()
         b_acc.fill.fore_color.rgb = C_RED
         b_acc.line.fill.background()
         
-        tx = s3.shapes.add_textbox(x + Inches(0.25), top_c + Inches(0.30), col3_w - Inches(0.50), card_h - Inches(0.50))
+        tx = s4.shapes.add_textbox(x + Inches(0.25), top_c + Inches(0.30), col3_w - Inches(0.50), card_h - Inches(0.50))
         tf = tx.text_frame
         tf.word_wrap = True
         tf.margin_left = tf.margin_top = tf.margin_right = tf.margin_bottom = 0
@@ -339,11 +445,11 @@ def build_presentation():
             p.space_after = Pt(10)
 
     # ==========================================================
-    # SLIDE 4: SYSTEM ARCHITECTURE
+    # SLIDE 5: 04 // SYSTEM ARCHITECTURE
     # ==========================================================
-    s4 = prs.slides.add_slide(blank_layout)
-    set_slide_background(s4)
-    add_header(s4, "03 // SYSTEM ARCHITECTURE", "END-TO-END DATA PIPELINE")
+    s5 = prs.slides.add_slide(blank_layout)
+    set_slide_background(s5)
+    add_header(s5, "04 // SYSTEM ARCHITECTURE", "END-TO-END DATA PIPELINE")
     
     col4_gap = Inches(0.24)
     col4_w = (CONTENT_WIDTH - 3 * col4_gap) / 4
@@ -388,7 +494,7 @@ def build_presentation():
             "is_highlight": False,
             "bullets": [
                 "▪ React 19 + Vite Single-Page Application",
-                "▪ VoiceBox Editorial brutalist UI design",
+                "▪ VoiceBox Editorial UI (0px border-radius)",
                 "▪ Interactive Threat Feed with 1-click resolution",
                 "▪ Paginated forensic audit trail with search"
             ]
@@ -397,19 +503,19 @@ def build_presentation():
     
     for i, t in enumerate(tiers):
         x = MARGIN_LEFT + i * (col4_w + col4_gap)
-        c = s4.shapes.add_shape(MSO_SHAPE.RECTANGLE, x, top_c, col4_w, card_h)
+        c = s5.shapes.add_shape(MSO_SHAPE.RECTANGLE, x, top_c, col4_w, card_h)
         c.fill.solid()
         c.fill.fore_color.rgb = C_CARD
         c.line.color.rgb = C_PRIMARY
         c.line.width = Pt(2)
         
         # Top accent bar
-        b_acc = s4.shapes.add_shape(MSO_SHAPE.RECTANGLE, x, top_c, col4_w, Inches(0.08))
+        b_acc = s5.shapes.add_shape(MSO_SHAPE.RECTANGLE, x, top_c, col4_w, Inches(0.08))
         b_acc.fill.solid()
         b_acc.fill.fore_color.rgb = C_RED if t["is_highlight"] else C_PRIMARY
         b_acc.line.fill.background()
         
-        tx = s4.shapes.add_textbox(x + Inches(0.20), top_c + Inches(0.30), col4_w - Inches(0.40), card_h - Inches(0.50))
+        tx = s5.shapes.add_textbox(x + Inches(0.20), top_c + Inches(0.30), col4_w - Inches(0.40), card_h - Inches(0.50))
         tf = tx.text_frame
         tf.word_wrap = True
         tf.margin_left = tf.margin_top = tf.margin_right = tf.margin_bottom = 0
@@ -438,28 +544,28 @@ def build_presentation():
             p.space_after = Pt(10)
 
     # ==========================================================
-    # SLIDE 5: DESIGN PHILOSOPHY
+    # SLIDE 6: 05 // DESIGN PHILOSOPHY
     # ==========================================================
-    s5 = prs.slides.add_slide(blank_layout)
-    set_slide_background(s5)
-    add_header(s5, "04 // FRONTEND DESIGN SPECIFICATION", "VOICEBOX EDITORIAL DESIGN SYSTEM")
+    s6 = prs.slides.add_slide(blank_layout)
+    set_slide_background(s6)
+    add_header(s6, "05 // FRONTEND DESIGN SPECIFICATION", "VOICEBOX EDITORIAL DESIGN SYSTEM")
     
-    card5 = s5.shapes.add_shape(MSO_SHAPE.RECTANGLE, MARGIN_LEFT, top_c, CONTENT_WIDTH, card_h)
-    card5.fill.solid()
-    card5.fill.fore_color.rgb = C_CARD
-    card5.line.color.rgb = C_PRIMARY
-    card5.line.width = Pt(2)
+    card6 = s6.shapes.add_shape(MSO_SHAPE.RECTANGLE, MARGIN_LEFT, top_c, CONTENT_WIDTH, card_h)
+    card6.fill.solid()
+    card6.fill.fore_color.rgb = C_CARD
+    card6.line.color.rgb = C_PRIMARY
+    card6.line.width = Pt(2)
     
     # Left red stripe
-    stripe5 = s5.shapes.add_shape(MSO_SHAPE.RECTANGLE, MARGIN_LEFT, top_c, Inches(0.12), card_h)
-    stripe5.fill.solid()
-    stripe5.fill.fore_color.rgb = C_RED
-    stripe5.line.fill.background()
+    stripe6 = s6.shapes.add_shape(MSO_SHAPE.RECTANGLE, MARGIN_LEFT, top_c, Inches(0.12), card_h)
+    stripe6.fill.solid()
+    stripe6.fill.fore_color.rgb = C_RED
+    stripe6.line.fill.background()
     
-    tx5 = s5.shapes.add_textbox(MARGIN_LEFT + Inches(0.50), top_c + Inches(0.40), CONTENT_WIDTH - Inches(0.80), card_h - Inches(0.70))
-    tf5 = tx5.text_frame
-    tf5.word_wrap = True
-    tf5.margin_left = tf5.margin_top = tf5.margin_right = tf5.margin_bottom = 0
+    tx6 = s6.shapes.add_textbox(MARGIN_LEFT + Inches(0.50), top_c + Inches(0.40), CONTENT_WIDTH - Inches(0.80), card_h - Inches(0.70))
+    tf6 = tx6.text_frame
+    tf6.word_wrap = True
+    tf6.margin_left = tf6.margin_top = tf6.margin_right = tf6.margin_bottom = 0
     
     principles = [
         ("1. Strict 0px Border-Radius: ", "Angular, geometric precision across every button, card, modal, and badge — zero rounded corners to establish an authoritative Security Operations Center aesthetic."),
@@ -469,7 +575,7 @@ def build_presentation():
         ("5. Hero Jump Navigation: ", "Prominent top-level CTA jump buttons enable security operators to switch effortlessly between high-level KPI cards and granular audit logs.")
     ]
     
-    p = tf5.paragraphs[0]
+    p = tf6.paragraphs[0]
     p.text = "CORE TENETS OF THE SECURITY OPERATIONS CENTER INTERFACE:"
     p.font.name = FONT_DISPLAY
     p.font.size = Pt(13)
@@ -477,7 +583,7 @@ def build_presentation():
     p.space_after = Pt(16)
     
     for title, desc in principles:
-        p = tf5.add_paragraph()
+        p = tf6.add_paragraph()
         run1 = p.add_run()
         run1.text = title
         run1.font.name = FONT_BODY
@@ -493,11 +599,11 @@ def build_presentation():
         p.space_after = Pt(14)
 
     # ==========================================================
-    # SLIDE 6: STEP-BY-STEP RUN GUIDE
+    # SLIDE 7: 06 // STEP-BY-STEP RUN GUIDE
     # ==========================================================
-    s6 = prs.slides.add_slide(blank_layout)
-    set_slide_background(s6)
-    add_header(s6, "05 // STEP-BY-STEP RUN GUIDE", "HOW TO RUN & DEMO THE SYSTEM")
+    s7 = prs.slides.add_slide(blank_layout)
+    set_slide_background(s7)
+    add_header(s7, "06 // STEP-BY-STEP RUN GUIDE", "HOW TO RUN & DEMO THE SYSTEM")
     
     steps = [
         {
@@ -528,20 +634,20 @@ def build_presentation():
     
     for i, st in enumerate(steps):
         x = MARGIN_LEFT + i * (col4_w + col4_gap)
-        c = s6.shapes.add_shape(MSO_SHAPE.RECTANGLE, x, top_c, col4_w, card_h)
+        c = s7.shapes.add_shape(MSO_SHAPE.RECTANGLE, x, top_c, col4_w, card_h)
         c.fill.solid()
         c.fill.fore_color.rgb = C_CARD
         c.line.color.rgb = C_PRIMARY
         c.line.width = Pt(2)
         
         # Red top accent
-        b_acc = s6.shapes.add_shape(MSO_SHAPE.RECTANGLE, x, top_c, col4_w, Inches(0.08))
+        b_acc = s7.shapes.add_shape(MSO_SHAPE.RECTANGLE, x, top_c, col4_w, Inches(0.08))
         b_acc.fill.solid()
         b_acc.fill.fore_color.rgb = C_RED
         b_acc.line.fill.background()
         
         # Text
-        tx = s6.shapes.add_textbox(x + Inches(0.20), top_c + Inches(0.30), col4_w - Inches(0.40), card_h - Inches(0.50))
+        tx = s7.shapes.add_textbox(x + Inches(0.20), top_c + Inches(0.30), col4_w - Inches(0.40), card_h - Inches(0.50))
         tf = tx.text_frame
         tf.word_wrap = True
         tf.margin_left = tf.margin_top = tf.margin_right = tf.margin_bottom = 0
@@ -562,7 +668,7 @@ def build_presentation():
         p.space_after = Pt(12)
         
         # Code Box shape
-        code_box = s6.shapes.add_shape(MSO_SHAPE.RECTANGLE, x + Inches(0.18), top_c + Inches(1.15), col4_w - Inches(0.36), Inches(0.85))
+        code_box = s7.shapes.add_shape(MSO_SHAPE.RECTANGLE, x + Inches(0.18), top_c + Inches(1.15), col4_w - Inches(0.36), Inches(0.85))
         code_box.fill.solid()
         code_box.fill.fore_color.rgb = C_CODE_BG
         code_box.line.color.rgb = C_PRIMARY
@@ -578,7 +684,7 @@ def build_presentation():
         p_c.font.color.rgb = C_PRIMARY
         
         # Description below code box
-        tx_desc = s6.shapes.add_textbox(x + Inches(0.20), top_c + Inches(2.20), col4_w - Inches(0.40), Inches(2.30))
+        tx_desc = s7.shapes.add_textbox(x + Inches(0.20), top_c + Inches(2.20), col4_w - Inches(0.40), Inches(2.30))
         tf_desc = tx_desc.text_frame
         tf_desc.word_wrap = True
         tf_desc.margin_left = tf_desc.margin_top = tf_desc.margin_right = tf_desc.margin_bottom = 0
@@ -589,15 +695,15 @@ def build_presentation():
         p_d.font.color.rgb = C_PRIMARY
 
     # ==========================================================
-    # SLIDE 7: EVALUATION & BENCHMARKS (Table)
+    # SLIDE 8: 07 // EVALUATION & BENCHMARKS (Table)
     # ==========================================================
-    s7 = prs.slides.add_slide(blank_layout)
-    set_slide_background(s7)
-    add_header(s7, "06 // EVALUATION & BENCHMARKS", "TEST BENCHMARK RESULTS (140 LOG SAMPLES)")
+    s8 = prs.slides.add_slide(blank_layout)
+    set_slide_background(s8)
+    add_header(s8, "07 // EVALUATION & BENCHMARKS", "TEST BENCHMARK RESULTS (140 LOG SAMPLES)")
     
     rows = 5
     cols = 4
-    table_shape = s7.shapes.add_table(rows, cols, MARGIN_LEFT, Inches(1.85), CONTENT_WIDTH, Inches(4.70))
+    table_shape = s8.shapes.add_table(rows, cols, MARGIN_LEFT, Inches(1.85), CONTENT_WIDTH, Inches(4.70))
     table = table_shape.table
     
     table.columns[0].width = Inches(2.50)
@@ -605,8 +711,8 @@ def build_presentation():
     table.columns[2].width = Inches(2.80)
     table.columns[3].width = Inches(2.633)
     
-    headers_s7 = ["TEST SCENARIO", "INJECTED LOG PATTERN", "HEURISTIC TRIGGER", "DETECTION RESULT"]
-    for c_idx, h_text in enumerate(headers_s7):
+    headers_s8 = ["TEST SCENARIO", "INJECTED LOG PATTERN", "HEURISTIC TRIGGER", "DETECTION RESULT"]
+    for c_idx, h_text in enumerate(headers_s8):
         cell = table.cell(0, c_idx)
         cell.fill.solid()
         cell.fill.fore_color.rgb = C_PRIMARY
@@ -646,63 +752,63 @@ def build_presentation():
                 p.font.color.rgb = C_PRIMARY
 
     # ==========================================================
-    # SLIDE 8: CONCLUSION & FUTURE SCOPE
+    # SLIDE 9: 08 // CONCLUSION & FUTURE SCOPE
     # ==========================================================
-    s8 = prs.slides.add_slide(blank_layout)
-    set_slide_background(s8)
+    s9 = prs.slides.add_slide(blank_layout)
+    set_slide_background(s9)
     
     # Top Accent Bar
-    top_bar8 = s8.shapes.add_shape(MSO_SHAPE.RECTANGLE, MARGIN_LEFT, Inches(0.60), CONTENT_WIDTH, Inches(0.12))
-    top_bar8.fill.solid()
-    top_bar8.fill.fore_color.rgb = C_PRIMARY
-    top_bar8.line.fill.background()
+    top_bar9 = s9.shapes.add_shape(MSO_SHAPE.RECTANGLE, MARGIN_LEFT, Inches(0.60), CONTENT_WIDTH, Inches(0.12))
+    top_bar9.fill.solid()
+    top_bar9.fill.fore_color.rgb = C_PRIMARY
+    top_bar9.line.fill.background()
     
     # Kicker
-    kicker8 = s8.shapes.add_textbox(MARGIN_LEFT, Inches(0.95), CONTENT_WIDTH, Inches(0.30))
-    tf_k8 = kicker8.text_frame
-    tf_k8.word_wrap = True
-    tf_k8.margin_left = tf_k8.margin_top = tf_k8.margin_right = tf_k8.margin_bottom = 0
-    p = tf_k8.paragraphs[0]
-    p.text = "07 // CONCLUSION & SUMMARY"
+    kicker9 = s9.shapes.add_textbox(MARGIN_LEFT, Inches(0.95), CONTENT_WIDTH, Inches(0.30))
+    tf_k9 = kicker9.text_frame
+    tf_k9.word_wrap = True
+    tf_k9.margin_left = tf_k9.margin_top = tf_k9.margin_right = tf_k9.margin_bottom = 0
+    p = tf_k9.paragraphs[0]
+    p.text = "08 // CONCLUSION & SUMMARY"
     p.font.name = FONT_BODY
     p.font.size = Pt(11)
     p.font.bold = True
     p.font.color.rgb = C_RED
     
     # Title
-    t8_box = s8.shapes.add_textbox(MARGIN_LEFT, Inches(1.25), CONTENT_WIDTH, Inches(0.65))
-    tf_t8 = t8_box.text_frame
-    tf_t8.word_wrap = True
-    tf_t8.margin_left = tf_t8.margin_top = tf_t8.margin_right = tf_t8.margin_bottom = 0
-    p = tf_t8.paragraphs[0]
+    t9_box = s9.shapes.add_textbox(MARGIN_LEFT, Inches(1.25), CONTENT_WIDTH, Inches(0.65))
+    tf_t9 = t9_box.text_frame
+    tf_t9.word_wrap = True
+    tf_t9.margin_left = tf_t9.margin_top = tf_t9.margin_right = tf_t9.margin_bottom = 0
+    p = tf_t9.paragraphs[0]
     p.text = "PROJECT ACHIEVEMENTS & FUTURE SCOPE"
     p.font.name = FONT_DISPLAY
     p.font.size = Pt(28)
     p.font.color.rgb = C_PRIMARY
     
     # Divider Line
-    line8 = s8.shapes.add_shape(MSO_SHAPE.RECTANGLE, MARGIN_LEFT, Inches(1.95), CONTENT_WIDTH, Inches(0.03))
-    line8.fill.solid()
-    line8.fill.fore_color.rgb = C_PRIMARY
-    line8.line.fill.background()
+    line9 = s9.shapes.add_shape(MSO_SHAPE.RECTANGLE, MARGIN_LEFT, Inches(1.95), CONTENT_WIDTH, Inches(0.03))
+    line9.fill.solid()
+    line9.fill.fore_color.rgb = C_PRIMARY
+    line9.line.fill.background()
     
     # Main Card
-    card8 = s8.shapes.add_shape(MSO_SHAPE.RECTANGLE, MARGIN_LEFT, Inches(2.15), CONTENT_WIDTH, Inches(3.90))
-    card8.fill.solid()
-    card8.fill.fore_color.rgb = C_CARD
-    card8.line.color.rgb = C_PRIMARY
-    card8.line.width = Pt(2)
+    card9 = s9.shapes.add_shape(MSO_SHAPE.RECTANGLE, MARGIN_LEFT, Inches(2.15), CONTENT_WIDTH, Inches(3.90))
+    card9.fill.solid()
+    card9.fill.fore_color.rgb = C_CARD
+    card9.line.color.rgb = C_PRIMARY
+    card9.line.width = Pt(2)
     
     # Left red stripe
-    stripe8 = s8.shapes.add_shape(MSO_SHAPE.RECTANGLE, MARGIN_LEFT, Inches(2.15), Inches(0.12), Inches(3.90))
-    stripe8.fill.solid()
-    stripe8.fill.fore_color.rgb = C_RED
-    stripe8.line.fill.background()
+    stripe9 = s9.shapes.add_shape(MSO_SHAPE.RECTANGLE, MARGIN_LEFT, Inches(2.15), Inches(0.12), Inches(3.90))
+    stripe9.fill.solid()
+    stripe9.fill.fore_color.rgb = C_RED
+    stripe9.line.fill.background()
     
-    tx8 = s8.shapes.add_textbox(MARGIN_LEFT + Inches(0.45), Inches(2.35), CONTENT_WIDTH - Inches(0.70), Inches(3.50))
-    tf8 = tx8.text_frame
-    tf8.word_wrap = True
-    tf8.margin_left = tf8.margin_top = tf8.margin_right = tf8.margin_bottom = 0
+    tx9 = s9.shapes.add_textbox(MARGIN_LEFT + Inches(0.45), Inches(2.35), CONTENT_WIDTH - Inches(0.70), Inches(3.50))
+    tf9 = tx9.text_frame
+    tf9.word_wrap = True
+    tf9.margin_left = tf9.margin_top = tf9.margin_right = tf9.margin_bottom = 0
     
     conclusions = [
         ("Production-Grade Architecture: ", "Engineered an end-to-end UBA platform combining Java Spring Boot 3, React 19, and relational audit storage under strict zero-trust principles."),
@@ -711,7 +817,7 @@ def build_presentation():
         ("Future Research Roadmap: ", "Plan to integrate unsupervised machine learning (Isolation Forests & Deep Autoencoders) for anomalous clustering and automated SIEM integration (Splunk, Elastic).")
     ]
     
-    p = tf8.paragraphs[0]
+    p = tf9.paragraphs[0]
     p.text = "SUMMARY OF PROJECT DELIVERABLES:"
     p.font.name = FONT_DISPLAY
     p.font.size = Pt(13)
@@ -719,7 +825,7 @@ def build_presentation():
     p.space_after = Pt(12)
     
     for title, desc in conclusions:
-        p = tf8.add_paragraph()
+        p = tf9.add_paragraph()
         run1 = p.add_run()
         run1.text = "▪ " + title
         run1.font.name = FONT_BODY
@@ -735,7 +841,7 @@ def build_presentation():
         p.space_after = Pt(12)
         
     # Bottom Callout Banner
-    bot_banner = s8.shapes.add_shape(MSO_SHAPE.RECTANGLE, MARGIN_LEFT, Inches(6.25), CONTENT_WIDTH, Inches(0.65))
+    bot_banner = s9.shapes.add_shape(MSO_SHAPE.RECTANGLE, MARGIN_LEFT, Inches(6.25), CONTENT_WIDTH, Inches(0.65))
     bot_banner.fill.solid()
     bot_banner.fill.fore_color.rgb = C_PRIMARY
     bot_banner.line.fill.background()
@@ -753,7 +859,7 @@ def build_presentation():
     # Save presentation
     output_path = 'documents/Insider_Threat_Detection_Presentation.pptx'
     prs.save(output_path)
-    print(f"Successfully generated clean, aligned PPTX at: {output_path}")
+    print(f"Successfully generated clean 9-slide PPTX at: {output_path}")
 
 if __name__ == '__main__':
     build_presentation()
