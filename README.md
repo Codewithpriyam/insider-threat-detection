@@ -119,8 +119,9 @@ The frontend interface utilizes a focused security-operations aesthetic:
 
 ## 7. Project Presentation & Evaluation Documents
 
-All presentation assets and benchmark datasets are organized in the [`documents/`](documents/) folder:
-1. **[`Insider_Threat_Detection_Presentation.pptx`](documents/Insider_Threat_Detection_Presentation.pptx):** Complete 8-slide PowerPoint presentation file for lab review and defense.
-2. **[`Interactive_Slide_Deck.html`](documents/Interactive_Slide_Deck.html):** Standalone browser-based presentation deck with keyboard arrow navigation.
-3. **[`Presentation_Speaker_Notes.md`](documents/Presentation_Speaker_Notes.md):** Slide-by-slide speaking script and viva Q&A guide.
-4. **[`sample_threat_logs.csv`](documents/sample_threat_logs.csv):** Benchmark dataset of 140 logs covering 20 users across multiple departments with embedded threat patterns.
+All presentation assets, benchmark datasets, and implementation reports are organized in the [`documents/`](documents/) folder:
+1. **[`Project_Implementation_Report.md`](documents/Project_Implementation_Report.md):** Complete academic engineering report covering architecture, data models, sliding-window algorithms, frontend/backend implementation details, and evaluation metrics.
+2. **[`Insider_Threat_Detection_Presentation.pptx`](documents/Insider_Threat_Detection_Presentation.pptx):** Complete 8-slide PowerPoint presentation file formatted in 16:9 widescreen for lab review and defense.
+3. **[`Interactive_Slide_Deck.html`](documents/Interactive_Slide_Deck.html):** Standalone browser-based presentation deck with keyboard arrow navigation.
+4. **[`Presentation_Speaker_Notes.md`](documents/Presentation_Speaker_Notes.md):** Slide-by-slide speaking script and viva Q&A guide.
+5. **[`sample_threat_logs.csv`](documents/sample_threat_logs.csv):** Benchmark dataset of 140 logs covering 20 users across multiple departments with embedded threat patterns.
